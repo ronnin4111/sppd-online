@@ -29,7 +29,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
             </Link>
           ))}
         </nav>
-        <div className="side-note"><strong>Akses terlindungi</strong><p>Data hanya dapat dibuka setelah pengguna masuk dengan akun ChatGPT.</p></div>
+        <div className="side-note"><strong>Akses terlindungi</strong><p>Data hanya dapat dibuka oleh administrator yang telah masuk.</p></div>
       </aside>
       <div className="main">
         <header className="topbar">
@@ -37,7 +37,9 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           <div><small>Sistem Informasi</small><strong>Perjalanan Dinas</strong></div>
           <div className="account-actions">
             <span className="online"><i /> Online</span>
-            <a href="/signout-with-chatgpt?return_to=%2F">Keluar</a>
+            <form action="/api/auth/logout" method="post">
+              <button type="submit" className="logout-button">Keluar</button>
+            </form>
           </div>
         </header>
         <main className="content">{children}</main>

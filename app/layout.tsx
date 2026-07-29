@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
-import { requireChatGPTUser } from "./chatgpt-auth";
 import "./globals.css";
 
 const geist = Geist({ variable: "--font-app", subsets: ["latin"] });
@@ -16,7 +15,6 @@ export const dynamic = "force-dynamic";
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  await requireChatGPTUser("/");
   return (
     <html lang="id">
       <body className={geist.variable}>{children}</body>

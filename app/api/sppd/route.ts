@@ -1,4 +1,5 @@
-import { getChatGPTUser } from "../../chatgpt-auth";
+import { getDatabaseAdapter } from "../../../db";
+import { getAdminSession } from "../../auth";
 
 type Statement = {
   bind: (...values: unknown[]) => Statement;
@@ -10,13 +11,7 @@ type Database = {
   prepare: (sql: string) => Statement;
   batch: (statements: Statement[]) => Promise<unknown>;
 };
-const db = () => {
-  const bindings = (globalThis as typeof globalThis & {
-    __SPPD_ENV?: { DB?: Database };
-  }).__SPPD_ENV;
-  if (!bindings?.DB) throw new Error("Binding database DB tidak tersedia.");
-  return bindings.DB;
-};
+const db = () => getDatabaseAdapter() as unknown as Database;
 
 const schema = [
   "CREATE TABLE IF NOT EXISTS settings (key TEXT PRIMARY KEY, value TEXT NOT NULL DEFAULT '')",
@@ -177,7 +172,7 @@ const sanitizeTemplateHtml = (value: string) => value
 
 export async function GET(request: Request) {
   try {
-    if (!(await getChatGPTUser())) {
+    if (!(await getAdminSession())) {
       return Response.json(
         { error: "Silakan masuk untuk mengakses data SPPD." },
         { status: 401 },
@@ -197,7 +192,7 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    if (!(await getChatGPTUser())) {
+    if (!(await getAdminSession())) {
       return Response.json(
         { error: "Silakan masuk untuk mengubah data SPPD." },
         { status: 401 },
