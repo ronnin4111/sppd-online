@@ -34,5 +34,12 @@
     "typescript": "5.9.3"
   },
   "type": "module",
-  "displayName": "SPPD Online"
+  "displayName": "SPPD Online",
+  "allowScripts": {
+    "esbuild@0.18.20": true,
+    "esbuild@0.25.12": true,
+    "esbuild@0.28.0": true,
+    "sharp@0.34.5": true,
+    "unrs-resolver@1.11.1": true
+  }
 }
